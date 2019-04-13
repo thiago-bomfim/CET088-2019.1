@@ -1,4 +1,37 @@
+; A macro with two parameters
+; Implements the write system call
+   %macro write_display 2 
+      mov   eax, 4			; system call number (sys_write)
+      mov   ebx, 1			; file descriptor (stdout)
+      mov   ecx, %1			; gate
+      mov   edx, %2			; lenght gate
+      int   80h
+   %endmacro
+
+
 section .data                           ;Data segment
+
+	menu1:	db "       |************** Menu ***************|",10
+	menu2:	db "       |                                   |",10
+	menu3:	db "       |       # choice one option: #      |",10
+	menu4:	db "       |  1. Open.                         |",10
+	menu5:	db "       |  2. Closed.                       |",10
+	menu6:	db "       |  3. Stop the closure.             |",10
+	menu7:	db "       |  0. Exit.                         |",10
+	menu8:	db "       |                                   |",10
+	menu9:	db "       |                                   |",10
+	menu10:	db "       |                                   |",10
+	menu11:	db "        *********************************** ",10
+	lenMenu:	equ $ - menu1
+
+
+	openScenario1: 	 db "|-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-|",10,10
+	openScenario2:   db	"                                                                                   ",10,10
+	lenOpenScenario:	equ $ - openScenario1
+
+	closedScenario1: db	"                                                                                   ",10,10
+	closedScenario2: db "|-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-|",10,10
+	lenClosedScenario:	equ $ - closedScenario1
 
 	gateOpening1:	db "		'----------------------            ---------------------'", 10
 	gateOpening2:	db "		'     /     /    /   /|           /     /     /    /   /'", 10
@@ -6,11 +39,11 @@ section .data                           ;Data segment
 	gateOpening4:	db "		'    |     |     |  | |     -------------------    |  | '", 10
 	gateOpening5:	db "		'--------------------/|     |                 |-------  '", 10
 	gateOpening6:	db "		'      |      |     | |     |                 | |   |   '", 10
-	gateOpening7:	db "		'--------------------/|  x| |                 |-------  '", 10
-	gateOpening8:	db "		'    |     |     |  | |     |                 |   |   | '", 10
-	gateOpening9:	db "		'--------------------/      |                 |-------  '", 10
-	gateOpening10:	db "		'               fcf /       |0----()----()----|  fca    '", 10
-	gateOpening11:	db "		'                  /            /                       '", 10
+	gateOpening7:	db "   *		'--------------------/|  x| |                 |-------  '", 10
+	gateOpening8:	db "  ***   	'    |     |     |  | |     |                 |   |   | '", 10
+	gateOpening9:	db " *****  	'--------------------/      |                 |-------  '", 10
+	gateOpening10:	db "   |		'               fcf /       |0----()----()----|  fca    '", 10
+	gateOpening11:	db "  _|_   	'                  /            /                       '", 10
 	gateOpening12:	db "		'                 /    --->    /                        '", 10
 	gateOpening13:	db "		'                /            /                         '", 10
 	gateOpening14:	db "		'               /            /                          '", 10
@@ -32,11 +65,11 @@ section .data                           ;Data segment
 	gateOpened4:	db "		'    |     |     |  | |            ------------------- |'", 10
 	gateOpened5:	db "		'--------------------/|            |                 |-|'", 10
 	gateOpened6:	db "		'      |      |     | |            |                 | |'", 10
-	gateOpened7:	db "		'--------------------/|         x| |                 |-|'", 10
-	gateOpened8:	db "		'    |     |     |  | |            |                 | |'", 10
-	gateOpened9:	db "		'--------------------/             |                 |-|'", 10
-	gateOpened10:	db "		'               fcf /              |0----()----()----| |'", 10
-	gateOpened11:	db "		'                  /            /                       '", 10
+	gateOpened7:	db "   *		'--------------------/|         x| |                 |-|'", 10
+	gateOpened8:	db "  ***		'    |     |     |  | |            |                 | |'", 10
+	gateOpened9:	db " *****		'--------------------/             |                 |-|'", 10
+	gateOpened10:	db "   |		'               fcf /              |0----()----()----| |'", 10
+	gateOpened11:	db "  _|_		'                  /            /                       '", 10
 	gateOpened12:	db "		'                 /            /                        '", 10
 	gateOpened13:	db "		'                /            /                         '", 10
 	gateOpened14:	db "		'               /            /                          '", 10
@@ -58,11 +91,11 @@ section .data                           ;Data segment
 	gateClosing4:	db "		'    |     |     |  | |     -------------------    |  | '", 10
 	gateClosing5:	db "		'--------------------/|     |                 |-------  '", 10
 	gateClosing6:	db "		'      |      |     | |     |                 | |   |   '", 10
-	gateClosing7:	db "		'--------------------/|  x| |                 |-------  '", 10
-	gateClosing8:	db "		'    |     |     |  | |     |                 |   |   | '", 10
-	gateClosing9:	db "		'--------------------/      |                 |-------  '", 10
-	gateClosing10:	db "		'               fcf /       |0----()----()----|  fca    '", 10
-	gateClosing11:	db "		'                  /            /                       '", 10
+	gateClosing7:	db "   *		'--------------------/|  x| |                 |-------  '", 10
+	gateClosing8:	db "  ***		'    |     |     |  | |     |                 |   |   | '", 10
+	gateClosing9:	db " *****		'--------------------/      |                 |-------  '", 10
+	gateClosing10:	db "   |		'               fcf /       |0----()----()----|  fca    '", 10
+	gateClosing11:	db "  _|_		'                  /            /                       '", 10
 	gateClosing12:	db "		'                 /    <---    /                        '", 10
 	gateClosing13:	db "		'                /            /                         '", 10
 	gateClosing14:	db "		'               /            /                          '", 10
@@ -84,11 +117,11 @@ section .data                           ;Data segment
 	gateClosed4:	db "		'   |    |     |    |--------------------|    |    |    |  '", 10
 	gateClosed5:	db "		'-------------------|                    |--------------   '", 10
 	gateClosed6:	db "		'     |     |     | |                    |     |    |      '", 10
-	gateClosed7:	db "		'-----------------x||                    |--------------   '", 10
-	gateClosed8:	db "		'   |    |     |    |                    |    |    |    |  '", 10
-	gateClosed9:	db "		'-------------------|                    |--------------   '", 10
-	gateClosed10:	db "		'             fcf  /|0-----()-----()-----| fca             '", 10
-	gateClosed11:	db "		'                 /            /                           '", 10
+	gateClosed7:	db "   *		'-----------------x||                    |--------------   '", 10
+	gateClosed8:	db "  ***		'   |    |     |    |                    |    |    |    |  '", 10
+	gateClosed9:	db " *****		'-------------------|                    |--------------   '", 10
+	gateClosed10:	db "   |		'             fcf  /|0-----()-----()-----| fca             '", 10
+	gateClosed11:	db "  _|_		'                 /            /                           '", 10
 	gateClosed12:	db "		'                /            /                            '", 10
 	gateClosed13:	db "		'               /            /                             '", 10
 	gateClosed14:	db "		'              /            /                              '", 10
@@ -108,30 +141,26 @@ section .data                           ;Data segment
 section .text          			;Code Segment
    global _start
 	
-_start: 
-	mov eax, 4 				; system call number (sys_write)
-   	mov ebx, 1				; file descriptor (stdout)
-   	mov ecx, gateClosed1
-   	mov edx, lenGateClosed
-   	int 80h
+_start:
+	write_display openScenario1, lenOpenScenario
+	write_display menu1, lenMenu
+	write_display closedScenario1, lenClosedScenario
 
-   	mov eax, 4 				; system call number (sys_write)
-   	mov ebx, 1				; file descriptor (stdout)
-   	mov ecx, gateOpening1
-   	mov edx, lenGateOpening
-   	int 80h
+	write_display openScenario1, lenOpenScenario
+	write_display gateClosed1, lenGateClosed
+	write_display closedScenario1, lenClosedScenario
 
-   	mov eax, 4 				; system call number (sys_write)
-   	mov ebx, 1				; file descriptor (stdout)
-   	mov ecx, gateClosing1
-   	mov edx, lenGateClosing
-   	int 80h
+	write_display openScenario1, lenOpenScenario
+   	write_display gateOpening1, lenGateOpening
+   	write_display closedScenario1, lenClosedScenario
 
-   	mov eax, 4 				; system call number (sys_write)
-   	mov ebx, 1				; file descriptor (stdout)
-   	mov ecx, gateClosed1
-   	mov edx, lenGateClosed
-   	int 80h
+   	write_display openScenario1, lenOpenScenario
+   	write_display gateClosing1, lenGateClosing 
+   	write_display closedScenario1, lenClosedScenario  
+
+   	write_display openScenario1, lenOpenScenario
+   	write_display gateOpened1, lenGateOpened
+   	write_display closedScenario1, lenClosedScenario
 
    	; Exit code
    	mov eax, 1
