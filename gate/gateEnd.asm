@@ -32,7 +32,7 @@ SYS_time equ 201 ; get time
 %endmacro
 
 %macro scan 2
-    write_display selectionArea1, lenSelectionArea 
+    	write_display selectionArea1, lenSelectionArea 
 	mov rax, SYS_read
 	mov rdi, STDOUT
 	mov rsi, %1
@@ -217,25 +217,25 @@ _start:
 	call _checkoption
 	
 	_menugateOpened1:
-    write_display scenario1, lenScenarioOptio
+    	write_display scenario1, lenScenarioOptio
 	print menugateOpened1, lenmenugateOpened1
 	scan opcao, 1
 	call _checkoptiongateOpened1
 	
 	_menugateOpening1:
-    write_display scenario1, lenScenarioOptio
+    	write_display scenario1, lenScenarioOptio
 	print menugateOpening1, lenmenugateOpening1
 	scan opcao, 1
 	call _checkoptiongateOpening1
 	
 	_menugateClosed1:
-    write_display scenario1, lenScenarioOptio
+    	write_display scenario1, lenScenarioOptio
 	print menugateClosed1, lenmenugateClosed1
 	scan opcao, 1
 	call _checkoptiongateClosed1
 	
 	_menugateClosing1:
-    write_display scenario1, lenScenarioOptio
+    	write_display scenario1, lenScenarioOptio
 	print menugateClosing1, lenmenugateClosing1
 	scan opcao, 1
 	call _checkoptiongateClosing1
